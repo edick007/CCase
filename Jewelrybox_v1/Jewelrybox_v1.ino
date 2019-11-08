@@ -38,17 +38,22 @@ void caseClose_fast(){
 
 void caseOpen(){
   change_angle_s1 = s1_max - s1_min;
-  change_angle_s2 = s2_max - s1_min;
-  for(unsigned char i = 1; i < divisions; i ++){
-    myservo.write(s1_min + (change_angle_s1 / i));
+  change_angle_s2 = s2_max - s2_min;
+  for(unsigned char i = 1; i < divisions; i++){  //function that takes the difference between the diference of angel from open and closed
+    myservo.write(s1_min + (change_angle_s1 / i));//  then breaks up the close and open animation to 10 intervals to slow it dwn
     myservo2.write(s2_max - (change_angle_s2 / i));
-
+    delay(50);
   }
 }
 
 void caseClose(){
-  myservo.write(10);              // tell servos to close box
-  myservo2.write(180); 
+  change_angle_s1 = s1_max - s1_min;
+  change_angle_s2 = s2_max - s2_min;
+  for(unsigned char i; i < divisions; i++){
+    myservo.write(s1_max - (change_angle_s1/i));              // tell servos to close box slower than fast
+    myservo2.write(s2_min + (change_angle_s2/i)); 
+    delay(50);
+  }
 }
 
 
