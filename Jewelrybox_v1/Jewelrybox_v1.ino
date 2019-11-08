@@ -17,11 +17,42 @@ void setup() {
     state = start;
    
 }
+// Variables for CCase
+  //for opening and closing
+unsigned char divisions = 10; // In Function: caseOpen and caseClose, sets the smoothness of the opening and closing
+unsigned char s1_min = 10;
+unsigned char s1_max = 100;
+unsigned char s2_min = 65;
+unsigned char s2_max = 180;
+
+void caseOpen_fast(){
+  myservo.write(100);              // tell servos to close box
+  myservo2.write(65); 
+}
+
+void caseClose_fast(){
+  myservo.write(10);              // tell servos to close box
+  myservo2.write(180); 
+}
+
+
+void caseOpen(){
+  change_angle_s1 = s1_max - s1_min;
+  change_angle_s2 = s2_max - s1_min;
+  for(unsigned char i = 1; i < divisions; i ++){
+    myservo.write(s1_min + (change_angle_s1 / i));
+    myservo2.write(s2_max - (change_angle_s2 / i));
+
+  }
+}
+
+void caseClose(){
+  myservo.write(10);              // tell servos to close box
+  myservo2.write(180); 
+}
 
 
 
-
-  unsigned char FLAG =0;
 void loop() {
   switch(state){
     case start:
@@ -93,4 +124,6 @@ void loop() {
   
 
 }
+
+
 
