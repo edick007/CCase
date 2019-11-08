@@ -11,8 +11,8 @@ enum button_states {start, baseOn, baseOff, on, off};
 enum button_states state;
 void setup() {
   pinMode(buttonOn, INPUT);
-  myservo.attach(9);  // attaches the servo on pin 9 to the servo object
-  myservo2.attach(10);  // attaches the servo on pin 9 to the servo object
+  myservo.attach(5);  // attaches the servo on pin 9 to the servo object
+  myservo2.attach(6);  // attaches the servo on pin 9 to the servo object
   delay(1000);
     state = start;
    
@@ -35,38 +35,38 @@ void caseClose_fast(){
   myservo2.write(180); 
 }
 
-
 void caseOpen(){
-  change_angle_s1 = s1_max - s1_min;
-  change_angle_s2 = s2_max - s2_min;
+  unsigned char change_angle_s1 = s1_max - s1_min;
+  unsigned char change_angle_s2 = s2_max - s2_min;
   for(unsigned char i = 1; i < divisions; i++){  //function that takes the difference between the diference of angel from open and closed
     myservo.write(s1_min + (change_angle_s1 / i));//  then breaks up the close and open animation to 10 intervals to slow it dwn
     myservo2.write(s2_max - (change_angle_s2 / i));
-    delay(50);
+    delay(200);
   }
 }
 
 void caseClose(){
-  change_angle_s1 = s1_max - s1_min;
-  change_angle_s2 = s2_max - s2_min;
+  unsigned char change_angle_s1 = s1_max - s1_min;
+  unsigned char change_angle_s2 = s2_max - s2_min;
   for(unsigned char i; i < divisions; i++){
     myservo.write(s1_max - (change_angle_s1/i));              // tell servos to close box slower than fast
     myservo2.write(s2_min + (change_angle_s2/i)); 
-    delay(50);
+    delay(500);
   }
 }
-
-
 
 void loop() {
   switch(state){
     case start:
-      state = off;
+     // state = off;
+     state = on;
     break;
     case off:
       if (digitalRead(buttonOn) == LOW)
       {
-        state = baseOff;
+        //state = baseOff;
+        state = on;
+        delay(10000);
       }
       else {
         state = off;
@@ -79,13 +79,16 @@ void loop() {
       }
       else{
         state = on;
+        
       }
       
     break;
     case on:
       if (digitalRead(buttonOn) == LOW)
       {
-        state = baseOn;
+        //state = baseOn;
+        state = off;
+        delay(10000);
       }
       else {
         state = on;
@@ -103,23 +106,19 @@ void loop() {
     default:
       state = start;
     break;
-  }
+  } 
   switch(state){
     case start:
       //do nothing
     break;
     case off:
-      myservo.write(10);              // tell servos to close box
-      myservo2.write(180); 
-      delay(1000);           
+     caseClose();        
     break;
     case baseOff:
       //wait for button release
     break;
     case on:
-      myservo.write(100);              // tell servos to open box
-      myservo2.write(65); 
-      delay(1000);    
+      caseOpen();    
     break;
     case baseOn:
       // wait for button release

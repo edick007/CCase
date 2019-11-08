@@ -1,0 +1,6 @@
+{
+    "board": "arduino:avr:nano",
+    "configuration": "cpu=atmega328",
+    "sketch": "Jewelrybox_v1.ino",
+    "port": "COM5"
+}
